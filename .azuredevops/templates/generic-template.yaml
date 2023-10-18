@@ -1,0 +1,29 @@
+parameters:
+  - name: deployFromFeature
+    type: boolean
+    default: false
+  - name: environments
+    type: object
+    default: []
+  - name: useCustomEnvironments
+    type: boolean
+  - name: program
+    type: string
+  - name: service
+    type: string
+  - name: resource
+    type: string
+
+extends:
+  ${{ if eq(parameters.useCustomEnvironments, false) }}:
+    template: services-infra-template.yaml
+  ${{ if eq(parameters.useCustomEnvironments, true) }}:
+    template: /infra/services/${{ parameters.program }}/${{ parameters.service }}/${{ parameters.resource }}-custom-envs.yaml
+  parameters:
+    deployFromFeature: ${{ parameters.deployFromFeature }}
+    program: ${{ parameters.program }}
+    service: ${{ parameters.service }}
+    resource: ${{ parameters.resource }}
+    ${{ if and(eq(parameters.useCustomEnvironments, false), gt(length(parameters.environments), 0)) }}:
+      environments:
+        - ${{ parameters.environments }}
