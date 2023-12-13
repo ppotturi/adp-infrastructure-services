@@ -1,5 +1,14 @@
+@description('Required. The name of the afd endpoint.')
+param afdEndpointName string = '#{{ afdClusterEndpointName }}'
+
 @description('Required. The name of the service.')
 param appEndpointName string
+
+@description('Optional. The name of custom hostname for origin.')
+param originCustomHost string = ''
+
+@description('Optional. Use Private Link for origin. Default to true.')
+param usePrivateLink bool = true
 
 @allowed([
   'Disabled'
@@ -7,6 +16,8 @@ param appEndpointName string
 ])
 @description('Required. The state of the route.')
 param enabledState string = 'Enabled'
+
+
 
 @description('Required. The rules to apply to the route.')
 param ruleSets array = []
@@ -16,12 +27,15 @@ var dnsZoneName = '#{{ publicDnsZoneName }}'
 var dnsZoneResourceGroup = '#{{ dnsResourceGroup }}'
 
 var profileName = '#{{ cdnProfileName }}'
-var endpointName = '#{{ afdClusterEndpointName }}'
 var loadBalancerPlsName = '#{{ aksLoadBalancerPlsName }}'
 var loadBalancerPlsResourceGroup = '#{{ aksResourceGroup }}-Managed'
 var wafPolicyName = '#{{ wafPolicyName }}'
 
 var hostName = '${appEndpointName}.${dnsZoneName}'
+
+var originCustomHostName = toLower(replace(originCustomHost, 'https://', ''))
+
+var hostHeader = (originCustomHostName == '' && hostName !='') ? hostName : originCustomHostName
 
 var customDomainConfig = {
   name: appEndpointName
@@ -49,7 +63,7 @@ module profile_custom_domain '.bicep/customdomain/main.bicep' = {
   params: {
     name: customDomainConfig.name
     profileName: profileName
-    afdEndpointName: endpointName
+    afdEndpointName: afdEndpointName
     dnsZoneName: dnsZoneName
     dnsZoneResourceGroup: dnsZoneResourceGroup
     hostName: customDomainConfig.hostName
@@ -57,7 +71,7 @@ module profile_custom_domain '.bicep/customdomain/main.bicep' = {
   }
 }
 
-resource aks_loadbalancer_pls 'Microsoft.Network/privateLinkServices@2023-05-01' existing = {
+resource aks_loadbalancer_pls 'Microsoft.Network/privateLinkServices@2023-05-01' existing = if (usePrivateLink) {
   name: loadBalancerPlsName
   scope: resourceGroup(loadBalancerPlsResourceGroup)
 }
@@ -75,18 +89,19 @@ module profile_origionGroup '.bicep/origingroup/main.bicep' = {
     sessionAffinityState: originGroupConfig.sessionAffinityState
     origins: map(originGroupConfig.origins, origin => {
         name: origin.name
-        hostName: aks_loadbalancer_pls.properties.alias
-        sharedPrivateLinkResource: {
+        hostName: usePrivateLink ? aks_loadbalancer_pls.properties.alias : originCustomHostName
+        sharedPrivateLinkResource: usePrivateLink ? {
           privateLink: {
             id: aks_loadbalancer_pls.id
           }
           privateLinkLocation: aks_loadbalancer_pls.location
           requestMessage: appEndpointName
-        }
-        originHostHeader: hostName
+        } : null
+        originHostHeader:  hostHeader
       })
   }
 }
+
 
 module profile_ruleSet '.bicep/ruleset/main.bicep' = [for (ruleSet, index) in ruleSets: {
   name: '${uniqueString(deployment().name)}-Profile-RuleSet-${index}'
@@ -107,10 +122,10 @@ module afd_endpoint_route '.bicep/route/main.bicep' = {
   params: {
     name: appEndpointName
     profileName: profileName
-    afdEndpointName: endpointName
+    afdEndpointName: afdEndpointName
     customDomainName: customDomainConfig.name
     enabledState: enabledState
-    forwardingProtocol: 'HttpOnly'
+    forwardingProtocol: 'MatchRequest'
     httpsRedirect: 'Enabled'
     linkToDefaultDomain: 'Disabled'
     originGroupName: profile_origionGroup.outputs.name

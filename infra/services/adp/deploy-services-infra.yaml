@@ -1,0 +1,40 @@
+name: 1.0.$(BuildID)-${{ parameters.service }}-${{ parameters.resource }}
+
+pr:
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - infra/services/ffc/*
+  drafts: false
+
+trigger: none
+
+parameters:
+  - name: deployFromFeature
+    displayName: "Deploy from Feature Branch"
+    type: boolean
+    default: false
+  - name: service
+    displayName: Select service that needs to be deployed
+    type: string
+    values:
+      - portal
+    default: portal
+  - name: resource
+    displayName: Resource Type to deploy
+    type: string
+    values:
+      - application-domain
+    default: application-domain
+
+extends:
+  template: /.azuredevops/templates/generic-template.yaml
+  parameters:
+    deployFromFeature: ${{ parameters.deployFromFeature }}
+    useCustomEnvironments: true
+    program: adp
+    service: ${{ parameters.service }}
+    resource: ${{ parameters.resource }}
+
