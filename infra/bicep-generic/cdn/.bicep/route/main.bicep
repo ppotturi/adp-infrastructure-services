@@ -55,9 +55,15 @@ param patternsToMatch array = []
 @description('Optional. The rule sets of the rule. The rule sets must be defined in the profile ruleSets.')
 param ruleSets array = []
 
+@description('Optional. The global rule sets of the rules that will be associated with every route.')
+param globalRuleSets array = []
+
 @allowed([ 'Http', 'Https' ])
 @description('Optional. The supported protocols of the rule.')
 param supportedProtocols array = []
+
+var mergedRuleSets = concat(ruleSets, globalRuleSets)
+
 
 resource profile 'Microsoft.Cdn/profiles@2023-05-01' existing = {
   name: profileName
@@ -74,7 +80,7 @@ resource profile 'Microsoft.Cdn/profiles@2023-05-01' existing = {
     name: originGroupName
   }
 
-  resource rule_set 'ruleSets@2023-05-01' existing = [for ruleSet in ruleSets: {
+  resource rule_set 'ruleSets@2023-05-01' existing = [for ruleSet in mergedRuleSets: {
     name: ruleSet.name
   }]
 }
@@ -96,7 +102,7 @@ resource afd_endpoint_route 'Microsoft.Cdn/profiles/afdEndpoints/routes@2023-05-
     }
     originPath: !empty(originPath) ? originPath : null
     patternsToMatch: patternsToMatch
-    ruleSets: [for (item, index) in ruleSets: {
+    ruleSets: [for (item, index) in mergedRuleSets: {
       id: profile::rule_set[index].id
     }]
     supportedProtocols: !empty(supportedProtocols) ? supportedProtocols : null

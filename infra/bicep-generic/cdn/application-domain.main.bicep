@@ -22,6 +22,13 @@ param enabledState string = 'Enabled'
 @description('Required. The rules to apply to the route.')
 param ruleSets array = []
 
+@description('Required. The global rules to apply to the route. These are existing global rule set defined for ADP which are setup in frontdoor profile.')
+param globalRuleSets array = [
+  {
+    name: 'ResponseHeaderRuleSet'
+  }
+]
+
 var location = '#{{ location }}'
 var dnsZoneName = '#{{ publicDnsZoneName }}'
 var dnsZoneResourceGroup = '#{{ dnsResourceGroup }}'
@@ -129,6 +136,8 @@ module afd_endpoint_route '.bicep/route/main.bicep' = {
     httpsRedirect: 'Enabled'
     linkToDefaultDomain: 'Disabled'
     originGroupName: profile_origionGroup.outputs.name
+    ruleSets: ruleSets
+    globalRuleSets: globalRuleSets
   }
 }
 
