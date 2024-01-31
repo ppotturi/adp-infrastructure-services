@@ -9,3 +9,5 @@ param originCustomHost = az.getSecret('#{{ ssvSubscriptionId }}', '#{{ ssvShared
 param usePrivateLink = false
 
 param enabledState = 'Enabled'
+
+param forwardingProtocol = 'MatchRequest'

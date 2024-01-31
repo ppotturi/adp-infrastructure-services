@@ -34,7 +34,17 @@ extends:
             path: infra/bicep-generic/cdn
             parameterFilePath: infra/services/${{ parameters.program }}/${{ parameters.service }}
             resourceGroupName: $(cdnResourceGroup)
-            
+            serviceConnectionVariableName: 'secServiceConnection'
+            postDeployScriptsList:
+              - displayName: Set AFD Security Policy
+                scriptPath: infra/scripts/Set-AFDSecurityPolicy.ps1
+                scriptArguments: >
+                  -AfdName '$(cdnProfileName)'
+                  -WafPolicyName '$(wafPolicyName)'
+                  -CustomDomainName '${{ parameters.service }}'
+                  -ResourceGroupName '$(cdnResourceGroup)'
+                  -SubscriptionId '$(secSubscriptionId)'
+
     ${{ if gt(length(parameters.environments), 0) }}:
       environments:
         - ${{ parameters.environments }}

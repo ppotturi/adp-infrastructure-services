@@ -14,15 +14,16 @@ param usePrivateLink bool = true
   'Disabled'
   'Enabled'
 ])
-@description('Required. The state of the route.')
+@description('Optional. The state of the route.')
 param enabledState string = 'Enabled'
 
+@description('Required')
+param forwardingProtocol string = 'HttpOnly'
 
-
-@description('Required. The rules to apply to the route.')
+@description('Optional. The rules to apply to the route.')
 param ruleSets array = []
 
-@description('Required. The global rules to apply to the route. These are existing global rule set defined for ADP which are setup in frontdoor profile.')
+@description('Optional. The global rules to apply to the route. These are existing global rule set defined for ADP which are setup in frontdoor profile.')
 param globalRuleSets array = [
   {
     name: 'ResponseHeaderRuleSet'
@@ -31,12 +32,12 @@ param globalRuleSets array = [
 
 var location = '#{{ location }}'
 var dnsZoneName = '#{{ publicDnsZoneName }}'
-var dnsZoneResourceGroup = '#{{ dnsResourceGroup }}'
+var dnsZoneResourceGroup = '#{{ cdnResourceGroup }}'
 
 var profileName = '#{{ cdnProfileName }}'
 var loadBalancerPlsName = '#{{ aksLoadBalancerPlsName }}'
 var loadBalancerPlsResourceGroup = '#{{ aksResourceGroup }}-Managed'
-var wafPolicyName = '#{{ wafPolicyName }}'
+var subscriptionId = '#{{ subscriptionId }}'
 
 var hostName = '${appEndpointName}.${dnsZoneName}'
 
@@ -80,7 +81,7 @@ module profile_custom_domain '.bicep/customdomain/main.bicep' = {
 
 resource aks_loadbalancer_pls 'Microsoft.Network/privateLinkServices@2023-05-01' existing = if (usePrivateLink) {
   name: loadBalancerPlsName
-  scope: resourceGroup(loadBalancerPlsResourceGroup)
+  scope: resourceGroup(subscriptionId, loadBalancerPlsResourceGroup)
 }
 
 module profile_origionGroup '.bicep/origingroup/main.bicep' = {
@@ -132,24 +133,11 @@ module afd_endpoint_route '.bicep/route/main.bicep' = {
     afdEndpointName: afdEndpointName
     customDomainName: customDomainConfig.name
     enabledState: enabledState
-    forwardingProtocol: 'MatchRequest'
+    forwardingProtocol: forwardingProtocol
     httpsRedirect: 'Enabled'
     linkToDefaultDomain: 'Disabled'
     originGroupName: profile_origionGroup.outputs.name
     ruleSets: ruleSets
     globalRuleSets: globalRuleSets
-  }
-}
-
-module security_policy '.bicep/securityPolicy/main.bicep' = {
-  name: '${uniqueString(deployment().name)}-Security-Policy'
-  dependsOn: [
-    profile_custom_domain
-  ]
-  params: {
-    name: 'default'
-    profileName: profileName
-    customDomainName: customDomainConfig.name
-    wafPolicyName: wafPolicyName
   }
 }
