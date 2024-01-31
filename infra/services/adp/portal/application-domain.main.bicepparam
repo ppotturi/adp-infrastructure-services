@@ -1,6 +1,6 @@
 using '../../../bicep-generic/cdn/application-domain.main.bicep'
 
-param afdEndpointName = '#{{ environment_lower}}#{{ environmentId }}-adp-portal'
+param afdEndpointName = '#{{ environment_lower}}#{{ environmentId }}-adp-containerapps'
 
 param appEndpointName = 'portal'
 
