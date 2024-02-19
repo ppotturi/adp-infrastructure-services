@@ -32,12 +32,11 @@ param globalRuleSets array = [
 
 var location = '#{{ location }}'
 var dnsZoneName = '#{{ publicDnsZoneName }}'
-var dnsZoneResourceGroup = '#{{ cdnResourceGroup }}'
+var dnsZoneResourceGroup = '#{{ dnsResourceGroup }}'
 
 var profileName = '#{{ cdnProfileName }}'
 var loadBalancerPlsName = '#{{ aksLoadBalancerPlsName }}'
 var loadBalancerPlsResourceGroup = '#{{ aksResourceGroup }}-Managed'
-var subscriptionId = '#{{ subscriptionId }}'
 
 var hostName = '${appEndpointName}.${dnsZoneName}'
 
@@ -81,7 +80,7 @@ module profile_custom_domain '.bicep/customdomain/main.bicep' = {
 
 resource aks_loadbalancer_pls 'Microsoft.Network/privateLinkServices@2023-05-01' existing = if (usePrivateLink) {
   name: loadBalancerPlsName
-  scope: resourceGroup(subscriptionId, loadBalancerPlsResourceGroup)
+  scope: resourceGroup(loadBalancerPlsResourceGroup)
 }
 
 module profile_origionGroup '.bicep/origingroup/main.bicep' = {

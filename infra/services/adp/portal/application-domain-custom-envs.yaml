@@ -20,12 +20,12 @@ extends:
         developmentEnvironment: true
         azureRegions:
           primary: 'UKSouth'
-      - name: 'prd1'
-        serviceConnection: AZR-ADP-PRD1
-        deploymentBranches:
-          - 'refs/heads/main'
-        azureRegions:
-          primary: 'UKSouth'      
+      # - name: 'prd1'
+      #   serviceConnection: AZR-ADP-PRD1
+      #   deploymentBranches:
+      #     - 'refs/heads/main'
+      #   azureRegions:
+      #     primary: 'UKSouth'
     deployFromFeature: ${{ parameters.deployFromFeature }}
     program: ${{ parameters.program }}
     service: ${{ parameters.service }}
