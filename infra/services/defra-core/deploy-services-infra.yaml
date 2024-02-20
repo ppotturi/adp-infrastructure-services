@@ -15,12 +15,8 @@ parameters:
     displayName: Select service that needs to be deployed
     type: string
     values:
-      - fcp-data-access-layer-api
-      - fcp-find-ai-frontend
-      - ffc-demo-web
-      - ffc-demo-payment-web
-      - ffc-ffd-frontend-poc
-    default: ffc-demo-web
+      - mcu-techspike-ai-web
+    default: mcu-techspike-ai-web
   - name: resource
     displayName: Resource Type to deploy
     type: string
@@ -33,7 +29,7 @@ extends:
   parameters:
     deployFromFeature: ${{ parameters.deployFromFeature }}
     useCustomEnvironments: ${{ parameters.useCustomEnvironments }}
-    program: ffc
+    program: defra-core
     service: ${{ parameters.service }}
     resource: ${{ parameters.resource }}
 

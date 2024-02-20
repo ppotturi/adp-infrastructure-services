@@ -26,6 +26,7 @@ extends:
     projectName: $(projectName)
     deployFromFeature: ${{ parameters.deployFromFeature }}
     filePathsForTransform: '**/*${{ parameters.resource }}.main.bicep'
+    includePlatformEnvs: false
     groupedDeployments:
     - ${{ if eq(parameters.resource, 'application-domain') }}:
       - name: application_domain
