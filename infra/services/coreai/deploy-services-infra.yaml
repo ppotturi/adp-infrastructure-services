@@ -29,7 +29,7 @@ extends:
   parameters:
     deployFromFeature: ${{ parameters.deployFromFeature }}
     useCustomEnvironments: ${{ parameters.useCustomEnvironments }}
-    program: defra-core
+    program: coreai
     service: ${{ parameters.service }}
     resource: ${{ parameters.resource }}
 
