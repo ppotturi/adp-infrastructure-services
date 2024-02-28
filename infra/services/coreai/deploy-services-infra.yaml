@@ -16,6 +16,7 @@ parameters:
     type: string
     values:
       - mcu-techspike-ai-web
+      - core-ai-techradar
     default: mcu-techspike-ai-web
   - name: resource
     displayName: Resource Type to deploy
