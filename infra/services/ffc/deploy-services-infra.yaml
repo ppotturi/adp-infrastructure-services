@@ -20,9 +20,9 @@ parameters:
       - ffc-demo-web
       - ffc-demo-payment-web
       - ffc-ffd-frontend-poc
+      - ffc-sfd-ahwp-stub
       - ffc-sfd-landing-page
       - ffc-sfd-messages
-      - ffc-sfd-messages-processor
       - ffc-sfd-permissions
     default: ffc-demo-web
   - name: resource
