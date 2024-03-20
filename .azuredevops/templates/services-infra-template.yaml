@@ -35,7 +35,18 @@ extends:
             path: infra/bicep-generic/cdn
             parameterFilePath: infra/services/${{ parameters.program }}/${{ parameters.service }}
             resourceGroupName: $(cdnResourceGroup)
-            postDeployScriptsList:
+
+            ${{ if eq(parameters.service, 'portal') }}:
+              preDeployScriptsList:
+                - displayName: Get App Gateway Public IP
+                  scriptPath: infra/scripts/Get-AppGatewayFrontendPublicIP.ps1
+                  serviceConnectionVariableName: secServiceConnection
+                  type: AzurePowerShell
+                  scriptArguments: >
+                    -ResourceGroupName  $(secInfraResourceGroup)
+                    -AppGatewayName $(secApplicationGatewayName)       
+                      
+            postDeployScriptsList:   
               - displayName: Set AFD Security Policy
                 scriptPath: infra/scripts/Set-AFDSecurityPolicy.ps1
                 scriptArguments: >

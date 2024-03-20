@@ -4,10 +4,10 @@ param afdEndpointName = '#{{ environment_lower}}#{{ environmentId }}-adp-contain
 
 param appEndpointName = 'portal'
 
-param originCustomHost = az.getSecret('#{{ ssvSubscriptionId }}', '#{{ ssvSharedResourceGroup }}', '#{{ ssvPlatformKeyVaultName }}', 'PORTAL-APP-DEFAULT-URL')
+param originCustomHost = '#{{ AppGatewayPublicIP }}'
 
 param usePrivateLink = false
 
 param enabledState = 'Enabled'
 
-param forwardingProtocol = 'MatchRequest'
+param forwardingProtocol = 'HTTP'

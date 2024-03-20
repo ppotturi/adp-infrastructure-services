@@ -104,7 +104,7 @@ module profile_origionGroup '.bicep/origingroup/main.bicep' = {
           privateLinkLocation: aks_loadbalancer_pls.location
           requestMessage: appEndpointName
         } : null
-        originHostHeader:  hostHeader
+        originHostHeader: hostHeader
       })
   }
 }
