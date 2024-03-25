@@ -31,7 +31,6 @@ extends:
         serviceConnection: AZR-ADP-PRE1
         deploymentBranches:
           - 'refs/heads/main'
-        developmentEnvironment: true
         azureRegions:
           primary: 'UKSouth'        
       # - name: 'prd1'
