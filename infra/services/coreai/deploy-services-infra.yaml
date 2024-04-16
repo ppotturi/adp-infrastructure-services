@@ -17,6 +17,7 @@ parameters:
     values:
       - mcu-techspike-ai-web
       - core-ai-techradar
+      - coreai-mcu-frontend
     default: mcu-techspike-ai-web
   - name: resource
     displayName: Resource Type to deploy
