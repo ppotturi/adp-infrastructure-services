@@ -21,9 +21,11 @@ parameters:
       - ffc-demo-payment-web
       - ffc-ffd-frontend-poc
       - ffc-sfd-ahwp-stub
+      - ffc-sfd-business         
       - ffc-sfd-landing-page
       - ffc-sfd-messages
       - ffc-sfd-permissions
+      
     default: ffc-demo-web
   - name: resource
     displayName: Resource Type to deploy
