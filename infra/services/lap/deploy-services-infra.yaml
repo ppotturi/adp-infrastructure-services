@@ -16,6 +16,7 @@ parameters:
     type: string
     values:
       - rpa-mit-web
+      - rpa-mit-manual-templates
     default: rpa-mit-web
   - name: resource
     displayName: Resource Type to deploy
