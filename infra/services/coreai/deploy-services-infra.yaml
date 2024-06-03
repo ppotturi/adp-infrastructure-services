@@ -1,5 +1,14 @@
 name: 1.0.$(BuildID)-${{ parameters.service }}-${{ parameters.resource }}
 
+pr:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - infra/services/coreai/*
+  drafts: false
+
 trigger: none
 
 parameters:
@@ -24,6 +33,7 @@ parameters:
     type: string
     values:
       - application-domain
+      - application-registration      
     default: application-domain
 
 extends:

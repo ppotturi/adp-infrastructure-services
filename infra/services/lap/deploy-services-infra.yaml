@@ -1,5 +1,14 @@
 name: 1.0.$(BuildID)-${{ parameters.service }}-${{ parameters.resource }}
 
+pr:
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - infra/services/lap/*
+  drafts: false
+
 trigger: none
 
 parameters:

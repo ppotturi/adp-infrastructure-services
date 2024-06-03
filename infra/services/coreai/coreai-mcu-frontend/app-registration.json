@@ -1,0 +1,57 @@
+{
+    "applications": [
+        {
+            "displayName": "ADP-CoreAI-MCU-Frontend-#{{ environment }}#{{ environmentId }}",
+            "IdentifierUris": "",
+            "secretAutoRenewalEnabled": true,
+            "keyVault": {
+                "name": "#{{ infraResourceNamePrefix }}#{{ nc_resource_keyvault }}#{{ nc_instance_regionid }}01",
+                "secrets": [
+                    {
+                        "key": "coreai-mcu-frontend-ClientSecret",
+                        "type": "ClientSecret"
+                    },
+                    {
+                        "key": "coreai-mcu-frontend-ClientId",
+                        "type": "ClientId"
+                    }
+                ]
+            },
+            "appRoles": [
+                {
+                    "allowedMemberTypes": [
+                        "User",
+                        "Application"
+                    ],
+                    "description": "Global Administrator",
+                    "displayName": "Global Administrator",
+                    "id": "c109cf58-fba0-4ff7-85c5-34bffd8512ce",
+                    "isEnabled": true,
+                    "lang": null,
+                    "origin": "Application",
+                    "value": "mcu.admin"
+                }
+            ],
+            "web": {
+                "redirectUris": [
+                    "https://coreai-mcu-frontend.#{{ publicDnsZoneName }}/authenticate"
+                ],
+                "implicitGrantSettings": {
+                    "enableAccessTokenIssuance": false,
+                    "enableIdTokenIssuance": true
+                }
+            },
+            "requiredResourceAccess": [
+                {
+                    "resourceAppId": "00000003-0000-0000-c000-000000000000",
+                    "resourceAccess": [
+                        {
+                            "id": "e1fe6dd8-ba31-4d61-89e7-88639da4683d",
+                            "type": "Scope"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

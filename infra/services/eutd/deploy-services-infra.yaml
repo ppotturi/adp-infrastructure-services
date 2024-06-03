@@ -1,5 +1,14 @@
 name: 1.0.$(BuildID)-${{ parameters.service }}-${{ parameters.resource }}
 
+pr:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - infra/services/eutd/*
+  drafts: false
+
 trigger: none
 
 parameters:

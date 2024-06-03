@@ -25,9 +25,34 @@ extends:
   parameters:
     projectName: $(projectName)
     deployFromFeature: ${{ parameters.deployFromFeature }}
-    filePathsForTransform: '**/*${{ parameters.resource }}.main.bicep'
+    filePathsForTransform: |
+      **/infra/services/${{ parameters.program }}/${{ parameters.service }}/app-registration.json
+      **/*${{ parameters.resource }}.main.bicep
     includePlatformEnvs: false
     groupedDeployments:
+    - ${{ if eq(parameters.resource, 'application-registration') }}:
+      - name: app_reg
+        deployments:
+          - name: Register App
+            type: 'script'
+            scriptType: AzurePowerShell
+            scriptRepo: PipelineCommonScripts
+            serviceConnectionVariableName: subscriptionName
+            resourceGroup: $(servicesResourceGroup)
+            path: "PowerShellLibrary/Add-AdAppRegistrations.ps1"
+            scriptArguments: >
+                -AppRegJsonPath '$(Pipeline.Workspace)/s/self/infra/services/${{ parameters.program }}/${{ parameters.service }}/app-registration.json'
+          - name: Set RBAC Permissions
+            type: 'script'
+            scriptType: AzurePowerShell
+            serviceConnectionVariableName: subscriptionName
+            resourceGroup: $(servicesResourceGroup)
+            path: "infra/scripts/Set-KVSecret-RBAC.ps1"
+            scriptArguments: >
+              -ServiceName '${{ parameters.service }}'
+              -KeyvaultName '$(infraResourceNamePrefix)$(nc_resource_keyvault)$(nc_instance_regionid)01'
+              -MIPrefix '$(infraResourceNamePrefix)$(nc_resource_managedidentity)$(nc_instance_regionid)01'
+
     - ${{ if eq(parameters.resource, 'application-domain') }}:
       - name: application_domain
         deployments:
