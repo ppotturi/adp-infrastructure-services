@@ -28,7 +28,7 @@ param(
     [string]$AfdName,
 
     [Parameter()] 
-    [string]$PolicyName = 'default',
+    [string]$PolicyName,
     
     [Parameter(Mandatory)] 
     [string]$WafPolicyName,

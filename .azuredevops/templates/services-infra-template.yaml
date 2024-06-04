@@ -69,17 +69,29 @@ extends:
                   type: AzurePowerShell
                   scriptArguments: >
                     -ResourceGroupName  $(secInfraResourceGroup)
-                    -AppGatewayName $(secApplicationGatewayName)       
-                      
+                    -AppGatewayName $(secApplicationGatewayName)                     
             postDeployScriptsList:   
-              - displayName: Set AFD Security Policy
-                scriptPath: infra/scripts/Set-AFDSecurityPolicy.ps1
-                scriptArguments: >
-                  -AfdName '$(cdnProfileName)'
-                  -WafPolicyName '$(wafPolicyName)'
-                  -CustomDomainName '${{ parameters.service }}'
-                  -ResourceGroupName '$(cdnResourceGroup)'
-                  -SubscriptionId '$(subscriptionId)'
+              - ${{ if ne(parameters.service, 'portal') }}:
+                  - displayName: Set AFD Security Policy
+                    scriptPath: infra/scripts/Set-AFDSecurityPolicy.ps1
+                    scriptArguments: >
+                      -AfdName '$(cdnProfileName)'
+                      -PolicyName 'default'
+                      -WafPolicyName '$(wafPolicyName)'
+                      -CustomDomainName '${{ parameters.service }}'
+                      -ResourceGroupName '$(cdnResourceGroup)'
+                      -SubscriptionId '$(subscriptionId)'
+
+              - ${{ if eq(parameters.service, 'portal') }}:
+                  - displayName: Set AFD ADP Portal Security Policy
+                    scriptPath: infra/scripts/Set-AFDSecurityPolicy.ps1
+                    scriptArguments: >
+                      -AfdName '$(cdnProfileName)'
+                      -PolicyName 'adp-portal'
+                      -WafPolicyName '$(adpPortalwafPolicyName)'
+                      -CustomDomainName '${{ parameters.service }}'
+                      -ResourceGroupName '$(cdnResourceGroup)'
+                      -SubscriptionId '$(subscriptionId)'           
 
     ${{ if gt(length(parameters.environments), 0) }}:
       environments:
