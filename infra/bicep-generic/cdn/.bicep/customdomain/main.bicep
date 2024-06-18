@@ -39,6 +39,8 @@ param dnsZoneName string
 
 param dnsZoneResourceGroup string
 
+param dnsZoneSubscriptionId string
+
 
 resource profile 'Microsoft.Cdn/profiles@2023-05-01' existing = {
   name: profileName
@@ -76,7 +78,7 @@ resource profile_custom_domain 'Microsoft.Cdn/profiles/customDomains@2023-05-01'
 
 module dns_zone '../dns/main.bicep' = {
   name: '${uniqueString(deployment().name)}-Dns-Zone'
-  scope: resourceGroup(dnsZoneResourceGroup)
+  scope: resourceGroup(dnsZoneSubscriptionId,dnsZoneResourceGroup)
   params: {
     dnsRecodName: name
     dnsZoneName: dnsZoneName

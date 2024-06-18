@@ -38,7 +38,9 @@ param hostName string = '${appEndpointName}.${dnsZoneName}'
 
 var location = '#{{ location }}'
 
-var dnsZoneResourceGroup = '#{{ dnsResourceGroup }}'
+var dnsZoneResourceGroup = (dnsZoneName == '#{{ adpDnsZoneName }}') ? '#{{ ssvSharedResourceGroup }}' : '#{{ dnsResourceGroup }}'
+
+var dnsZoneSubscriptionId = (dnsZoneName == '#{{ adpDnsZoneName }}') ? '#{{ ssvSubscriptionId }}' : subscription().subscriptionId
 
 var profileName = '#{{ cdnProfileName }}'
 var loadBalancerPlsName = '#{{ aksLoadBalancerPlsName }}'
@@ -77,6 +79,7 @@ module profile_custom_domain '.bicep/customdomain/main.bicep' = {
     afdEndpointName: afdEndpointName
     dnsZoneName: dnsZoneName
     dnsZoneResourceGroup: dnsZoneResourceGroup
+    dnsZoneSubscriptionId: dnsZoneSubscriptionId
     hostName: customDomainConfig.hostName
     certificateType: customDomainConfig.certificateType
   }
