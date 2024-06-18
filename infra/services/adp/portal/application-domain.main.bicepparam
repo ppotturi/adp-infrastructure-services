@@ -11,3 +11,5 @@ param usePrivateLink = false
 param enabledState = 'Enabled'
 
 param forwardingProtocol = 'HttpOnly'
+
+param hostName = '#{{ portalWebHostNameFD }}'

@@ -30,15 +30,19 @@ param globalRuleSets array = [
   }
 ]
 
+@description('Optional. The DNS Zone Name. Default to publicDnsZoneName.')
+param dnsZoneName string = '#{{ publicDnsZoneName }}'
+
+@description('Optional. The DNS Zone Name. Default to publicDnsZoneName.')
+param hostName string = '${appEndpointName}.${dnsZoneName}'
+
 var location = '#{{ location }}'
-var dnsZoneName = '#{{ publicDnsZoneName }}'
+
 var dnsZoneResourceGroup = '#{{ dnsResourceGroup }}'
 
 var profileName = '#{{ cdnProfileName }}'
 var loadBalancerPlsName = '#{{ aksLoadBalancerPlsName }}'
 var loadBalancerPlsResourceGroup = '#{{ aksResourceGroup }}-Managed'
-
-var hostName = '${appEndpointName}.${dnsZoneName}'
 
 var originCustomHostName = toLower(replace(originCustomHost, 'https://', ''))
 
