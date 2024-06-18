@@ -13,3 +13,5 @@ param enabledState = 'Enabled'
 param forwardingProtocol = 'HttpOnly'
 
 param hostName = '#{{ portalWebHostNameFD }}'
+
+param dnsZoneName = '#{{ portalDNSZoneNameFD }}'

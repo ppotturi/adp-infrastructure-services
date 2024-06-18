@@ -33,7 +33,7 @@ param globalRuleSets array = [
 @description('Optional. The DNS Zone Name. Default to publicDnsZoneName.')
 param dnsZoneName string = '#{{ publicDnsZoneName }}'
 
-@description('Optional. The DNS Zone Name. Default to publicDnsZoneName.')
+@description('Optional. host Name. Default to appEndpointName.dnsZoneName')
 param hostName string = '${appEndpointName}.${dnsZoneName}'
 
 var location = '#{{ location }}'
