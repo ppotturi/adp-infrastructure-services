@@ -28,6 +28,13 @@ parameters:
       - core-ai-techradar
       - coreai-mcu-frontend
     default: mcu-techspike-ai-web
+  - name: ingressType
+    displayName: Select ingress type of the service
+    type: string
+    values:
+      - internal
+      - external    
+    default: internal
   - name: resource
     displayName: Resource Type to deploy
     type: string
@@ -43,5 +50,6 @@ extends:
     useCustomEnvironments: ${{ parameters.useCustomEnvironments }}
     program: coreai
     service: ${{ parameters.service }}
+    ingressType: ${{ parameters.ingressType }}
     resource: ${{ parameters.resource }}
 

@@ -41,5 +41,6 @@ extends:
     useCustomEnvironments: ${{ parameters.useCustomEnvironments }}
     program: lap
     service: ${{ parameters.service }}
+    ingressType: ${{ parameters.ingressType }}
     resource: ${{ parameters.resource }}
 

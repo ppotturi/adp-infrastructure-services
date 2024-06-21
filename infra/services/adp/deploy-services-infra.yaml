@@ -38,5 +38,6 @@ extends:
     useCustomEnvironments: true
     program: adp
     service: ${{ parameters.service }}
+    ingressType: internal-portal
     resource: ${{ parameters.resource }}
 

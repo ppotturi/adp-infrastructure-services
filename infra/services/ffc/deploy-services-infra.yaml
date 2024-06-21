@@ -29,8 +29,16 @@ parameters:
       - ffc-sfd-ahwp-stub
       - ffc-sfd-permissions
       - ea-wq-incident-web
-      
     default: ffc-demo-web
+
+  - name: ingressType
+    displayName: Select ingress type of the service
+    type: string
+    values:
+      - internal
+      - external    
+    default: internal   
+    
   - name: resource
     displayName: Resource Type to deploy
     type: string
@@ -50,4 +58,6 @@ extends:
     includePlatformEnvs: ${{ parameters.includePlatformEnvs }}
     program: ffc
     service: ${{ parameters.service }}
+    ingressType: ${{ parameters.ingressType }}
     resource: ${{ parameters.resource }}
+

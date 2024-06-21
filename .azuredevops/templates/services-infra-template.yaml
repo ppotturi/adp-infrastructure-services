@@ -9,6 +9,8 @@ parameters:
     type: string
   - name: service
     type: string
+  - name: ingressType
+    type: string
   - name: resource
     type: string
   - name: includePlatformEnvs
@@ -72,29 +74,24 @@ extends:
                   type: AzurePowerShell
                   scriptArguments: >
                     -ResourceGroupName  $(secInfraResourceGroup)
-                    -AppGatewayName $(secApplicationGatewayName)                     
-            postDeployScriptsList:   
-              - ${{ if ne(parameters.service, 'portal') }}:
-                  - displayName: Set AFD Security Policy
-                    scriptPath: infra/scripts/Set-AFDSecurityPolicy.ps1
-                    scriptArguments: >
-                      -AfdName '$(cdnProfileName)'
-                      -PolicyName 'default'
-                      -WafPolicyName '$(wafPolicyName)'
-                      -CustomDomainName '${{ parameters.service }}'
-                      -ResourceGroupName '$(cdnResourceGroup)'
-                      -SubscriptionId '$(subscriptionId)'
+                    -AppGatewayName $(secApplicationGatewayName)
 
-              - ${{ if eq(parameters.service, 'portal') }}:
-                  - displayName: Set AFD ADP Portal Security Policy
-                    scriptPath: infra/scripts/Set-AFDSecurityPolicy.ps1
-                    scriptArguments: >
-                      -AfdName '$(cdnProfileName)'
-                      -PolicyName 'adp-portal'
-                      -WafPolicyName '$(adpPortalwafPolicyName)'
-                      -CustomDomainName '${{ parameters.service }}'
-                      -ResourceGroupName '$(cdnResourceGroup)'
-                      -SubscriptionId '$(subscriptionId)'           
+            postDeployScriptsList:
+              - displayName: 'Determine WAF Ingress Type'
+                type: PowerShell
+                inlineScript: |
+                  $output = '$(azureDeploymentOutputs)' | ConvertFrom-Json
+                  Write-Host "##vso[task.setvariable variable=wafName;]$($output.wafName.value)"
+
+              - displayName: Set AFD Security Policy
+                scriptPath: infra/scripts/Set-AFDSecurityPolicy.ps1
+                scriptArguments: >
+                  -AfdName '$(cdnProfileName)'
+                  -PolicyName '${{ parameters.ingressType }}'
+                  -WafPolicyName '$(wafName)'
+                  -CustomDomainName '${{ parameters.service }}'
+                  -ResourceGroupName '$(cdnResourceGroup)'
+                  -SubscriptionId '$(subscriptionId)'
 
     ${{ if gt(length(parameters.environments), 0) }}:
       environments:

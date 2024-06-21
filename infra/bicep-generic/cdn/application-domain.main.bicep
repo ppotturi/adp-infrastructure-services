@@ -30,6 +30,8 @@ param globalRuleSets array = [
   }
 ]
 
+@description('Required. The name of the WAF.')
+param wafName string
 @description('Optional. The DNS Zone Name. Default to publicDnsZoneName.')
 param dnsZoneName string = '#{{ publicDnsZoneName }}'
 
@@ -147,3 +149,6 @@ module afd_endpoint_route '.bicep/route/main.bicep' = {
     globalRuleSets: globalRuleSets
   }
 }
+
+@description('The name of the WAF.')
+output wafName string = wafName

@@ -6,6 +6,8 @@ parameters:
     type: string
   - name: service
     type: string
+  - name: ingressType
+    type: string
   - name: resource
     type: string
   - name: includePlatformEnvs
@@ -45,4 +47,5 @@ extends:
     deployFromFeature: ${{ parameters.deployFromFeature }}
     program: ${{ parameters.program }}
     service: ${{ parameters.service }}
+    ingressType: ${{ parameters.ingressType }}
     resource: ${{ parameters.resource }}

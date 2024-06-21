@@ -26,6 +26,13 @@ parameters:
     values:
       - trade-exports-packinglistai-ui
     default: trade-exports-packinglistai-ui
+  - name: ingressType
+    displayName: Select ingress type of the service
+    type: string
+    values:
+      - internal
+      - external    
+    default: internal
   - name: resource
     displayName: Resource Type to deploy
     type: string
@@ -40,5 +47,6 @@ extends:
     useCustomEnvironments: ${{ parameters.useCustomEnvironments }}
     program: eutd
     service: ${{ parameters.service }}
+    ingressType: ${{ parameters.ingressType }}
     resource: ${{ parameters.resource }}
 
