@@ -20,7 +20,7 @@ parameters:
     displayName: Select service that needs to be deployed
     type: string
     values:
-      - ffc-sfd-ingress
+      - ffc-sfd
       - fcp-data-access-layer-api
       - fcp-find-ai-frontend
       - ffc-demo-web
@@ -36,8 +36,8 @@ parameters:
     type: string
     values:
       - internal
-      - external    
-    default: internal   
+      - external
+    default: internal
     
   - name: resource
     displayName: Resource Type to deploy
@@ -60,4 +60,3 @@ extends:
     service: ${{ parameters.service }}
     ingressType: ${{ parameters.ingressType }}
     resource: ${{ parameters.resource }}
-
