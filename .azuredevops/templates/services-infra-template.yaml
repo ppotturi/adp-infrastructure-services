@@ -11,7 +11,10 @@ parameters:
     type: string
   - name: resource
     type: string
-
+  - name: includePlatformEnvs
+    type: boolean
+    default: false
+  
 resources:
   repositories:
     - repository: ADPPipelineCommon
@@ -28,7 +31,7 @@ extends:
     filePathsForTransform: |
       **/infra/services/${{ parameters.program }}/${{ parameters.service }}/app-registration.json
       **/*${{ parameters.resource }}.main.bicep
-    includePlatformEnvs: false
+    includePlatformEnvs: ${{ parameters.includePlatformEnvs }}
     groupedDeployments:
     - ${{ if eq(parameters.resource, 'application-registration') }}:
       - name: app_reg

@@ -8,6 +8,9 @@ parameters:
     type: string
   - name: resource
     type: string
+  - name: includePlatformEnvs
+    type: boolean
+    default: false
 
 extends:
   template: /.azuredevops/templates/services-infra-template.yaml
@@ -38,7 +41,7 @@ extends:
           - 'refs/heads/main'
         azureRegions:
           primary: 'UKSouth'
-      
+    includePlatformEnvs: ${{ parameters.includePlatformEnvs }}
     deployFromFeature: ${{ parameters.deployFromFeature }}
     program: ${{ parameters.program }}
     service: ${{ parameters.service }}

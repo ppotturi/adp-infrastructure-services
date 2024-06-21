@@ -16,23 +16,17 @@ parameters:
     displayName: "Deploy from Feature Branch"
     type: boolean
     default: false
-  - name: useCustomEnvironments
-    displayName: "Use Custom Environments"
-    type: boolean
-    default: false
   - name: service
     displayName: Select service that needs to be deployed
     type: string
     values:
+      - ffc-sfd-ingress
       - fcp-data-access-layer-api
       - fcp-find-ai-frontend
       - ffc-demo-web
       - ffc-demo-payment-web
       - ffc-ffd-frontend-poc
       - ffc-sfd-ahwp-stub
-      - ffc-sfd-business
-      - ffc-sfd-landing-page
-      - ffc-sfd-messages
       - ffc-sfd-permissions
       - ea-wq-incident-web
       
@@ -43,13 +37,17 @@ parameters:
     values:
       - application-domain
     default: application-domain
+  - name: includePlatformEnvs
+    displayName: Include Platform Environments
+    type: boolean
+    default: false
 
 extends:
   template: /.azuredevops/templates/generic-template.yaml
   parameters:
     deployFromFeature: ${{ parameters.deployFromFeature }}
-    useCustomEnvironments: ${{ parameters.useCustomEnvironments }}
+    useCustomEnvironments: false
+    includePlatformEnvs: ${{ parameters.includePlatformEnvs }}
     program: ffc
     service: ${{ parameters.service }}
     resource: ${{ parameters.resource }}
-

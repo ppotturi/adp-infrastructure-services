@@ -13,6 +13,9 @@ parameters:
     type: string
   - name: resource
     type: string
+  - name: includePlatformEnvs
+    type: boolean
+    default: false
 
 extends:
   ${{ if eq(parameters.useCustomEnvironments, false) }}:
@@ -24,6 +27,7 @@ extends:
     program: ${{ parameters.program }}
     service: ${{ parameters.service }}
     resource: ${{ parameters.resource }}
+    includePlatformEnvs: ${{ parameters.includePlatformEnvs }}
     ${{ if and(eq(parameters.useCustomEnvironments, false), gt(length(parameters.environments), 0)) }}:
       environments:
         - ${{ parameters.environments }}
