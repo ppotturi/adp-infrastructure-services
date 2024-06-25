@@ -27,6 +27,13 @@ parameters:
       - rpa-mit-web
       - rpa-mit-manual-templates
     default: rpa-mit-web
+  - name: ingressType
+    displayName: Select ingress type of the service
+    type: string
+    values:
+      - internal
+      - external
+    default: internal
   - name: resource
     displayName: Resource Type to deploy
     type: string

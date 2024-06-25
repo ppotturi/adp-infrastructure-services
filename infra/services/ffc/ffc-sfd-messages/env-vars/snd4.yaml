@@ -1,0 +1,3 @@
+variables:
+  appEndpoint: 'ffc-sfd-messages'
+  dnsZoneName: '$(publicDnsZoneName)'

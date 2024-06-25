@@ -34,6 +34,12 @@ extends:
       **/infra/services/${{ parameters.program }}/${{ parameters.service }}/app-registration.json
       **/*${{ parameters.resource }}.main.bicep
     includePlatformEnvs: ${{ parameters.includePlatformEnvs }}
+    variableFiles: 
+      - /pipelines/vars/common.yaml@_self
+      - /pipelines/vars/env/{environment}.yaml@_self
+      - /pipelines/vars/tenant/azure-ip-ranges.yaml@_self
+      - /infra/services/${{ parameters.program }}/${{ parameters.service }}/env-vars/{environment}.yaml@self
+
     groupedDeployments:
     - ${{ if eq(parameters.resource, 'application-registration') }}:
       - name: app_reg
@@ -82,6 +88,7 @@ extends:
                 inlineScript: |
                   $output = '$(azureDeploymentOutputs)' | ConvertFrom-Json
                   Write-Host "##vso[task.setvariable variable=wafName;]$($output.wafName.value)"
+                  Write-Host "##vso[task.setvariable variable=appEndpointName;]$($output.appEndpointName.value)"
 
               - displayName: Set AFD Security Policy
                 scriptPath: infra/scripts/Set-AFDSecurityPolicy.ps1
@@ -89,7 +96,7 @@ extends:
                   -AfdName '$(cdnProfileName)'
                   -PolicyName '${{ parameters.ingressType }}'
                   -WafPolicyName '$(wafName)'
-                  -CustomDomainName '${{ parameters.service }}'
+                  -CustomDomainName '$(appEndpointName)'
                   -ResourceGroupName '$(cdnResourceGroup)'
                   -SubscriptionId '$(subscriptionId)'
 

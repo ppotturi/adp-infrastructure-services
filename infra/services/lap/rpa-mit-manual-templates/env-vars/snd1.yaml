@@ -1,0 +1,3 @@
+variables:
+  appEndpoint: 'rpa-mit-manual-templates'
+  dnsZoneName: '$(publicDnsZoneName)'

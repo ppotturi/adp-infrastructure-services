@@ -1,0 +1,3 @@
+variables:
+  appEndpoint: 'fcp-find-ai-frontend'
+  dnsZoneName: '$(publicDnsZoneName)'

@@ -1,6 +1,8 @@
 using '../../../bicep-generic/cdn/application-domain.main.bicep'
 
-param appEndpointName = 'ffc-sfd-permissions'
+param appEndpointName = '#{{ appEndpoint }}'
+
+param dnsZoneName = '#{{ dnsZoneName }}'
 
 param enabledState = 'Enabled'
 

@@ -1,0 +1,3 @@
+variables:
+  appEndpoint: 'ea-wq-incident-web'
+  dnsZoneName: '$(publicDnsZoneName)'
