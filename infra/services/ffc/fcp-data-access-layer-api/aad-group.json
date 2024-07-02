@@ -11,7 +11,7 @@
             },
             "Members": {
                 "groups" : [
-                    "AAG-Users-ADP-FFC-DAL_TechUser"
+                    "AAG-Users-ADP-FCP-DAL_TechUser"
                 ],
                 "serviceprincipals": [
                     "ADP-FCP-DAL-#{{ environment }}#{{ environmentId }}-CONSOLIDATED-VIEW"
