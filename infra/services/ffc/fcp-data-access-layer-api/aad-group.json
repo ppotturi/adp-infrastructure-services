@@ -1,0 +1,22 @@
+{
+    "userADGroups": [
+        {
+            "displayName": "AAG-Azure-ADP-#{{ environment }}#{{ environmentId }}-FCP-DAL-CONSOLIDATED-VIEW",
+            "description": "Azure AD Access group for FCP DAL CONSOLIDATED VIEW App.",
+            "Owners": {
+                "serviceprincipals" : [
+                    "#{{ ssvAppRegServicePrincipalName }}"
+                ],
+                "users" : []
+            },
+            "Members": {
+                "groups" : [
+                    "AAG-Users-ADP-FFC-DAL_TechUser"
+                ],
+                "serviceprincipals": [
+                    "ADP-FCP-DAL-#{{ environment }}#{{ environmentId }}-CONSOLIDATED-VIEW"
+                ]
+            }
+        }
+    ]
+}

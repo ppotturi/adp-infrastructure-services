@@ -1,0 +1,66 @@
+{
+    "applications": [
+        {
+            "displayName": "ADP-FCP-DAL-#{{ environment }}#{{ environmentId }}-CONSOLIDATED-VIEW",
+            "identifierUris": "api://{{appId}}",
+            "secretAutoRenewalEnabled": true,
+            "keyVault": {
+                "name": "#{{ infraResourceNamePrefix }}#{{ nc_resource_keyvault }}#{{ nc_instance_regionid }}01",
+                "secrets": [
+                    {
+                        "key": "fcp-data-access-layer-consolidated-view-ClientSecret",
+                        "type": "ClientSecret"
+                    },
+                    {
+                        "key": "fcp-data-access-layer-consolidated-view-ClientId",
+                        "type": "ClientId"
+                    }
+                ]
+            },
+            "requiredResourceAccess": [
+                {
+                    "resourceAppId": "00000003-0000-0000-c000-000000000000",
+                    "resourceAccess": [
+                        {
+                            "id": "e1fe6dd8-ba31-4d61-89e7-88639da4683d",
+                            "type": "Scope"
+                        }
+                    ]
+                }
+            ],            
+            "groupMembershipClaims": "SecurityGroup",
+            "optionalClaims": {
+                "idToken": [
+                    {
+                        "name": "groups",
+                        "source": null,
+                        "essential": false,
+                        "additionalProperties": [
+                            "sam_account_name"
+                        ]
+                    }
+                ],
+                "accessToken": [
+                    {
+                        "name": "groups",
+                        "source": null,
+                        "essential": false,
+                        "additionalProperties": [
+                            "sam_account_name"
+                        ]
+                    }
+                ],
+                "saml2Token": [
+                    {
+                        "name": "groups",
+                        "source": null,
+                        "essential": false,
+                        "additionalProperties": [
+                            "sam_account_name"
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -44,6 +44,8 @@ parameters:
     type: string
     values:
       - application-domain
+      - application-registration
+      - application-access-group
     default: application-domain
   - name: includePlatformEnvs
     displayName: Include Platform Environments
