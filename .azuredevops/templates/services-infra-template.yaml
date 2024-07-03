@@ -21,13 +21,13 @@ resources:
   repositories:
     - repository: ADPPipelineCommon
       name: DEFRA/adp-pipeline-common
-      endpoint: DEFRA
+      endpoint: DEFRA-ADP
       type: github
       ref: refs/tags/1.0.0-latest
 
     - repository: ADPInfrastuctureCore
       name: DEFRA/adp-infrastructure-core
-      endpoint: DEFRA
+      endpoint: DEFRA-ADP
       type: github
       ref: main
 
