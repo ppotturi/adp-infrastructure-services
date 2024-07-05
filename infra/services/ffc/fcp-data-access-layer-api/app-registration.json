@@ -5,7 +5,7 @@
             "identifierUris": "api://{{appId}}",
             "secretAutoRenewalEnabled": true,
             "keyVault": {
-                "name": "#{{ infraResourceNamePrefix }}#{{ nc_resource_keyvault }}#{{ nc_instance_regionid }}01",
+                "name": "#{{ infraResourceNamePrefix }}#{{ nc_resource_keyvault }}#{{ nc_instance_regionid }}03",
                 "secrets": [
                     {
                         "key": "fcp-data-access-layer-consolidated-view-ClientSecret",
