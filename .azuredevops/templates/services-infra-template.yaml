@@ -25,12 +25,6 @@ resources:
       type: github
       ref: refs/tags/1.0.0-latest
 
-    - repository: ADPInfrastuctureCore
-      name: DEFRA/adp-infrastructure-core
-      endpoint: DEFRA-ADP
-      type: github
-      ref: main
-
 extends:
   template: /pipelines/common-infra-deploy.yaml@ADPPipelineCommon
   parameters:
@@ -40,7 +34,6 @@ extends:
       **/infra/services/${{ parameters.program }}/${{ parameters.service }}/app-registration.json
       **/infra/services/${{ parameters.program }}/${{ parameters.service }}/aad-group.json
       **/*${{ parameters.resource }}.main.bicep
-    additionalRepositories: [ ADPInfrastuctureCore ]
     includePlatformEnvs: ${{ parameters.includePlatformEnvs }}
     variableFiles: 
       - /pipelines/vars/common.yaml@_self
@@ -77,9 +70,9 @@ extends:
           - name: Create Group
             type: 'script'
             scriptType: AzurePowerShell
-            scriptRepo: ADPInfrastuctureCore
+            scriptRepo: PipelineCommonScripts
             serviceConnectionVariableName: ssvServiceConnection            
-            path: "infra/bootstrap/tenant/scripts/Create-AADGroups.ps1"
+            path: "PowerShellLibrary/Create-AADGroups.ps1"
             scriptArguments: >
                 -AADGroupsJsonManifestPath '$(Pipeline.Workspace)/s/self/infra/services/${{ parameters.program }}/${{ parameters.service }}/aad-group.json'
     - ${{ if eq(parameters.resource, 'application-domain') }}:
