@@ -23,6 +23,7 @@ parameters:
       - ffc-sfd
       - fcp-data-access-layer-api
       - fcp-find-ai-frontend
+      - fcp-find-ai-data-ingester
       - ffc-demo-web
       - ffc-demo-payment-web
       - ffc-ffd-frontend-poc
@@ -46,6 +47,7 @@ parameters:
       - application-domain
       - application-registration
       - application-access-group
+      - service-mi-rbac
     default: application-domain
   - name: includePlatformEnvs
     displayName: Include Platform Environments
@@ -62,3 +64,9 @@ extends:
     service: ${{ parameters.service }}
     ingressType: ${{ parameters.ingressType }}
     resource: ${{ parameters.resource }}
+    ${{ if eq(parameters.service, 'fcp-find-ai-data-ingester') }}:
+      includeServiceVariableFiles: Common
+    ${{ elseif eq(parameters.service, 'fcp-find-ai-frontend') }}:
+      includeServiceVariableFiles: Both
+    ${{ else }}:
+      includeServiceVariableFiles: Environment

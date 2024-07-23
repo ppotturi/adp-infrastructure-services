@@ -1,0 +1,2 @@
+variables:
+  accessGroupMiList: '[{"groupName": "$(openAiUserGroup)",  "miSuffixList": "fcp-find-ai-frontend"}]'

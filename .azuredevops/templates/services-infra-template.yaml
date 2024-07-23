@@ -16,6 +16,8 @@ parameters:
   - name: includePlatformEnvs
     type: boolean
     default: false
+  - name: includeServiceVariableFiles
+    type: string
   
 resources:
   repositories:
@@ -39,8 +41,10 @@ extends:
       - /pipelines/vars/common.yaml@_self
       - /pipelines/vars/env/{environment}.yaml@_self
       - /pipelines/vars/tenant/azure-ip-ranges.yaml@_self
-      - /infra/services/${{ parameters.program }}/${{ parameters.service }}/env-vars/{environment}.yaml@self
-
+      - ${{ if or(eq(parameters.includeServiceVariableFiles, 'Both'),eq(parameters.includeServiceVariableFiles, 'Environment')) }}:
+        - /infra/services/${{ parameters.program }}/${{ parameters.service }}/env-vars/{environment}.yaml@self
+      - ${{ if or(eq(parameters.includeServiceVariableFiles, 'Both'),eq(parameters.includeServiceVariableFiles, 'Common')) }}:
+        - /infra/services/${{ parameters.program }}/${{ parameters.service }}/env-vars/common.yaml@self
     groupedDeployments:
     - ${{ if eq(parameters.resource, 'application-registration') }}:
       - name: app_reg
@@ -110,7 +114,17 @@ extends:
                   -CustomDomainName '$(appEndpointName)'
                   -ResourceGroupName '$(cdnResourceGroup)'
                   -SubscriptionId '$(subscriptionId)'
-
+    - ${{ if eq(parameters.resource, 'service-mi-rbac') }}:
+      - name: service_mi_rbac
+        deployments:
+          - name: Service MI RBAC
+            type: 'script'
+            scriptType: AzurePowerShell
+            serviceConnectionVariableName: ssvServiceConnection
+            path: "infra/scripts/Add-MI-To-RBACGroup.ps1"
+            scriptArguments: >
+              -AccessGroupMiList '$(accessGroupMiList)'
+              -MIPrefix '$(infraResourceNamePrefix)$(nc_resource_managedidentity)$(nc_instance_regionid)01'
     ${{ if gt(length(parameters.environments), 0) }}:
       environments:
         - ${{ parameters.environments }}

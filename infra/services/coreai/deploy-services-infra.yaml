@@ -27,6 +27,8 @@ parameters:
       - mcu-techspike-ai-web
       - core-ai-techradar
       - coreai-mcu-frontend
+      - coreai-mcu-generation-oai
+      - coreai-mcu-knowledge-pgv
     default: mcu-techspike-ai-web
   - name: ingressType
     displayName: Select ingress type of the service
@@ -40,7 +42,8 @@ parameters:
     type: string
     values:
       - application-domain
-      - application-registration      
+      - application-registration
+      - service-mi-rbac
     default: application-domain
 
 extends:
@@ -52,4 +55,7 @@ extends:
     service: ${{ parameters.service }}
     ingressType: ${{ parameters.ingressType }}
     resource: ${{ parameters.resource }}
-
+    ${{ if or(eq(parameters.service, 'coreai-mcu-generation-oai'),eq(parameters.service, 'coreai-mcu-knowledge-pgv') ) }}:
+      includeServiceVariableFiles: Common
+    ${{ else }}:
+      includeServiceVariableFiles: Environment
