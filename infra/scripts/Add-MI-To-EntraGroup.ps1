@@ -78,7 +78,7 @@ try {
             }
         }
 
-        if ($null -ne $members) {
+        if ($null -ne $members -and $members.Count -gt 0) {
             Write-Debug "Adding members $($members -join ',') to group $groupid"
             Add-AzADGroupMember -TargetGroupObjectId $groupid -MemberObjectId $members
         }
