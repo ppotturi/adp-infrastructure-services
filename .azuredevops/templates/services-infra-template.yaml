@@ -121,9 +121,9 @@ extends:
             type: 'script'
             scriptType: AzurePowerShell
             serviceConnectionVariableName: ssvServiceConnection
-            path: "infra/scripts/Add-MI-To-RBACGroup.ps1"
+            path: "infra/scripts/Add-MI-To-EntraGroup.ps1"
             scriptArguments: >
-              -AccessGroupMiList '$(accessGroupMiList)'
+              -GroupMIList '$(accessGroupMiList)'
               -MIPrefix '$(infraResourceNamePrefix)$(nc_resource_managedidentity)$(nc_instance_regionid)01'
     ${{ if gt(length(parameters.environments), 0) }}:
       environments:
