@@ -27,7 +27,6 @@
                     "displayName": "Global Administrator",
                     "id": "c109cf58-fba0-4ff7-85c5-34bffd8512ce",
                     "isEnabled": true,
-                    "lang": null,
                     "origin": "Application",
                     "value": "mcu.admin"
                 }
