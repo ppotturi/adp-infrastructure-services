@@ -1,0 +1,2 @@
+variables:
+  ehcoServicePrincipalNames: 'exports-rms-backend-pre-blue,exports-rms-backend-pre-green'
